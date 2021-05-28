@@ -13,24 +13,7 @@ namespace circle
     public partial class Form1 : Form
     {
 
-        public void circle( Point center , double r)
-        {
-            Bitmap bic = new Bitmap(this.Width, this.Height);
-
-
-            for(int thate = 0; thate<=360; thate++)
-            {
-                double x, y;
-
-                x = center.X + r * Math.Cos(thate);
-
-                y = center.Y + r  * Math.Sin(thate);
-
-                bic.SetPixel((int)(x), (int)(y), Color.Red);
-
-            }
-            pictureBox1.Image = bic;
-        }
+         
         public Form1()
         {
             InitializeComponent();
@@ -51,16 +34,51 @@ namespace circle
 
         }
 
+
+
+        //////// Draw circle  
+        void circlepoints(int xcenter, int ycenter, int i, int k)
+        {
+             
+            var brush = Brushes.Red;
+            var g = panel1.CreateGraphics();
+            g.FillRectangle(brush, xcenter + i, ycenter + k, 1, 1);
+            g.FillRectangle(brush, xcenter - i, ycenter + k, 1, 1);
+            g.FillRectangle(brush, xcenter + i, ycenter - k, 1, 1);
+            g.FillRectangle(brush, xcenter - i, ycenter - k, 1, 1);
+            g.FillRectangle(brush, xcenter + k, ycenter + i, 1, 1);
+            g.FillRectangle(brush, xcenter - k, ycenter + i, 1, 1);
+            g.FillRectangle(brush, xcenter + k, ycenter - i, 1, 1);
+            g.FillRectangle(brush, xcenter - k, ycenter - i, 1, 1);
+        }
         private void button1_Click(object sender, EventArgs e)
         {
             int Xc = Convert.ToInt32(textBox1.Text);
             int Yc = Convert.ToInt32(textBox2.Text);
 
-            double r = Convert.ToDouble(textBox3.Text);
+            int r = Convert.ToInt32(textBox3.Text);
 
-            Point center = new Point(Xc, Yc);
+            int x = 0;
+            int y = r;
+            int p = (3 - 2 * r);
 
-            circle(center, r);
+            circlepoints(Xc, Yc, x, y);
+            while (x <= y)
+            {
+                x++;
+                if (p > 0)
+                {
+                    y--;
+                    p = p + 4 * (x - y) + 10;
+                }
+                else
+                {
+                    p = p + 4 * x + 6;
+                }
+                circlepoints(Xc, Yc, x, y);
+            }
+
+
         }
 
         private void textBox4_TextChanged(object sender, EventArgs e)
@@ -70,6 +88,7 @@ namespace circle
 
 
          
+        // // /// Draw Ellipse
         private void button2_Click(object sender, EventArgs e)
         {
             int X = Convert.ToInt32(textBox1.Text);
@@ -81,9 +100,6 @@ namespace circle
             Bitmap Bit = new Bitmap(this.Width, this.Height);
 
             ellipseMidpoint(p1, Rx, Ry, Bit);
-
-
-
 
         }
 
